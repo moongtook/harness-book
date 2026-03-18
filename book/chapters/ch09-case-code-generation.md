@@ -784,7 +784,7 @@ public final class TokenValidator {
             final Map<String, Object> payload = decoded.getClaims().entrySet().stream()
                     .collect(java.util.stream.Collectors.toMap(
                             Map.Entry::getKey,
-                            entry -> entry.getValue().as(Object.class)
+                            entry -> entry.getValue().asString()
                     ));
             return ValidationResult.valid(payload);
         } catch (TokenExpiredException e) {
@@ -844,7 +844,7 @@ class TokenValidator(secretKey: String) {
         return runCatching {
             val decoded = JWT.require(algorithm).build().verify(token)
             val payload = decoded.claims
-                .mapValues { (_, claim) -> claim.`as`(Any::class.java) }
+                .mapValues { (_, claim) -> claim.asString() }
             ValidationResult.Valid(payload)
         }.getOrElse { error ->
             when (error) {
@@ -913,7 +913,7 @@ Phase 3의 검증 루프를 더 자세히 살펴보자.
 
 리뷰어가 FAIL을 판정하면, `review.md`에 구체적인 피드백이 담긴다. 이 파일이 전문가에게 전달되는 "수정 요청서"다.
 
-예를 들어, Python 코드에 대해 리뷰어가 다음과 같은 피드백을 남겼다고 하자.
+Phase 2에서 보여준 코드는 리뷰와 수정이 완료된 최종본이다. 여기서는 리뷰 과정을 재현하기 위해, 초안 시점의 코드를 기준으로 살펴보자. 예를 들어, Python 코드에 대해 리뷰어가 다음과 같은 피드백을 남겼다고 하자.
 
 **`codegen-output/python/review.md` (1차 리뷰 — FAIL):**
 

@@ -737,7 +737,7 @@ book-writer 하네스의 현재 설계가 유일한 정답은 아니다. 다른 
 
 2. **Phase 2**: chapter-writer(지금 이 글을 쓰고 있는 에이전트)가 outline.md의 명세를 읽고, 챕터 구조(배울 것 → 본문 → 정리 → 미리보기)에 맞춰 집필했다.
 
-3. **Phase 3**: book-editor가 이 원고를 리뷰했다. "CRITICAL: Phase 3의 생성-검증 루프 설명이 Chapter 3의 패턴 설명과 중복됨 — 이 하네스에 특화된 분석으로 차별화 필요", "WARNING: 대안 분석 섹션의 트레이드오프가 추상적 — 구체적 수치나 예시 추가 권장" 같은 피드백이 나왔을 것이다. chapter-writer가 피드백을 반영하여 수정하고, book-editor가 재리뷰하여 승인한다.
+3. **Phase 3**: book-editor가 이 원고를 리뷰했다. "CRITICAL: Phase 3의 생성-검증 루프 설명이 Chapter 3의 패턴 설명과 중복됨 — 이 하네스에 특화된 분석으로 차별화 필요", "WARNING: 대안 분석 섹션의 트레이드오프가 추상적 — 구체적 수치나 예시 추가 권장" 같은 피드백이 나올 수 있다. chapter-writer가 피드백을 반영하여 수정하고, book-editor가 재리뷰하여 승인한다.
 
 이 순환 구조가 메타적으로 흥미로운 점이다: **이 챕터는 자신이 설명하는 프로세스에 의해 만들어졌다.** Chapter 7이 book-writer 하네스를 분석하는 동시에, book-writer 하네스가 Chapter 7을 만든다. 마치 컴파일러가 자기 자신을 컴파일하는 셀프 호스팅(self-hosting)과 같다.
 
