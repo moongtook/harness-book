@@ -555,6 +555,64 @@ svg {
   <line x1="640" y1="370" x2="500" y2="410" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
 </svg>
 
+<h3 id="메타-스킬의-실제-내용">메타 스킬의 실제 내용</h3>
+<p>아래는 이 책을 만든 하네스 메타 스킬(<code>~/.claude/skills/harness/SKILL.md</code>)의 실제 내용이다. 이 파일 하나가 위의 전체 과정을 정의한다.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">name:</span><span class="co"> harness</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> &quot;하네스를 구성합니다. 전문 에이전트를 정의하며, 해당 에이전트가</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">             사용할 스킬을 생성하는 메타 스킬. (1) &#39;하네스 구성해줘&#39;,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">             &#39;하네스 구축해줘&#39; 요청 시, (2) &#39;하네스 설계&#39;, &#39;하네스 엔지니어링&#39;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">             요청 시, (3) 새로운 도메인/프로젝트에 대한 하네스 기반 자동화</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">             체계를 구축할 때, (4) 하네스 구성을 재구성하거나 확장할 때 사용.&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu"># Harness — Agent Team &amp; Skill Architect</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>도메인/프로젝트에 맞는 하네스를 구성하고, 각 에이전트의 역할을 정의하며,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>에이전트가 사용할 스킬을 생성하는 메타 스킬.</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>**핵심 원칙: 에이전트 정의(`.claude/agents/`)와 스킬(`.claude/skills/`)을 생성한다.**</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## 워크플로우</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phase 1: 도메인 분석</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>사용자 요청에서 도메인/프로젝트 파악</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>핵심 작업 유형 식별 (생성, 검증, 편집, 분석 등)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>기존 에이전트/스킬 확인 (충돌/중복 방지)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phase 2: 팀 아키텍처 설계</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>작업을 전문 영역으로 분해</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>에이전트 팀 구조 결정 (아키텍처 패턴 참조)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>**파이프라인**: 순차 의존 작업</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>**팬아웃/팬인**: 병렬 독립 작업</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>**전문가 풀**: 상황별 선택 호출</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>**생성-검증**: 생성 후 품질 검수</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>에이전트 분리 기준 적용:</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>전문성이 다르면 분리</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>독립 실행 가능하면 분리</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>컨텍스트 부담이 크면 분리</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>재사용성이 높으면 분리</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phase 3: 에이전트 정의 생성</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>각 에이전트를 <span class="in">`프로젝트/.claude/agents/{name}.md`</span>에 정의.</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phase 4: 스킬 생성</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>각 에이전트가 사용할 스킬을 <span class="in">`프로젝트/.claude/skills/{name}/SKILL.md`</span>에 생성.</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phase 5: 통합 스킬 (오케스트레이터)</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>팀 전체를 조율하는 상위 스킬 생성:</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>에이전트 구성 테이블</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Phase별 워크플로우 (병렬/순차)</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>에이전트 간 데이터 흐름</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>각 Phase의 검증 기준 명시</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phase 6: 검증</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> 모든 에이전트 파일이 올바른 위치에 있는지 확인</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> frontmatter(name, description, model) 검증</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> 에이전트의 description에 트리거 키워드가 포함되어 있는지 확인</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> 에이전트 간 참조 일관성 확인</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> 오케스트레이터 스킬에서 모든 에이전트가 참조되는지 확인</span></code></pre></div>
+<p>이 마크다운 파일이 <code>~/.claude/skills/harness/</code> 에 위치한다. 프로젝트별이 아니라 <strong>사용자의 홈 디렉토리</strong>에 있으므로, 어떤 프로젝트에서든 “책을 집필해줘”, “리서치 팀을 구성해줘”라고 요청하면 이 메타 스킬이 트리거되어 해당 도메인에 맞는 하네스를 자동 생성한다.</p>
 <hr />
 <h2 id="실제-동작-예시-이-책이-만들어진-방법">실제 동작 예시: 이 책이 만들어진 방법</h2>
 <p>이 책 자체가 하네스로 만들어졌다. “12챕터 기술서를 집필해줘”라는 요청 하나로, 5명의 에이전트가 협업하여 259페이지 PDF를 만들어냈다.</p>
